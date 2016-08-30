@@ -30,6 +30,24 @@ img {
 	height:100%;
 }
 
+#strobeBtn {
+	
+	height:6em;
+	width:6em;
+	background-size:contain;
+	background-repeat: no-repeat;
+	background-position: bottom;
+	border:none;
+	outline: none;
+}
+
+.strobeOn {
+	background-color: red;
+}
+
+.strobeOff {
+	background-color:blue;
+}
 
 #candyBtn {
 	background: url("./assets/candyLogo.png");
@@ -42,9 +60,33 @@ img {
 	outline: none;
 }
 
-#candyBtn:hover {
+#candyBtn:active {
 	border: 3px solid transparent;
 } 
+
+#shakeBtn {
+	position: absolute;
+	height:6em;
+	width:8em;
+	background-size:contain;
+	background-repeat: no-repeat;
+	background-position: bottom;
+	border:none;
+	outline: none;
+	right:4px;
+}
+
+#shakeBtn:active {
+	border: 3px solid transparent;
+} 
+
+.shakeOffImg {
+	background: url("./assets/shakeOffBtn.png");
+}
+
+.shakeOnImg {
+	background: url("./assets/shakeOnBtn.png");
+}
 
 #navBarContainer {
 	height:7em;
@@ -93,19 +135,38 @@ ul {
 }
 
 .candyImage img {
-	box-shadow: 0px 0px 2px blue,
-				0px 0px 5px blue,
-				0px 0px 8px blue;
-	
+	border:black solid 1px;
+	box-shadow: 0px 0px 1px black,
+				0px 0px 2px black,
+				0px 0px 3px black,
+				 0px 0px 4px black,
+				0px 0px 5px black,
+				0px 0px 6px black;
+
 }
 
 .candyImage {
 	box-sizing: border-box;
-	background: white;
+	background:white;
 	text-align: center;
 	padding: .5em;
-	overflow:hidden;
+	
 }
+
+#fullImage {
+	background: center center no-repeat / 100% 100%;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	margin: 0 auto;
+	height:100%;
+	width:100%;
+	display: none;
+}
+
+
 
 
 
