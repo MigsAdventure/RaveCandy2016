@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-
   var images = ["Alcohol.gif",
     "Alcohol.png",
     "AlienDubstep.gif",
@@ -69,12 +68,10 @@ $(document).ready(function() {
     return x.match("gif");
   });
 
-  console.log(gifImages);
-
   //creates the list items with images
   for (var i = 0; i < images.length; i++) {
     if (images[i].match(".png")) {
-      tableImages.push($("<li class='col-xs-4 col-sm-3 col-md-2 candyImage'>").append($("<img>").attr("src", "assets/" + images[i])));
+      tableImages.push($("<li id ='" + images[i].replace(".png","") + "' class='col-xs-4 col-sm-3 col-md-2 candyImage'>").append($("<img>").attr("src", "assets/" + images[i])));
     }
   }
 
@@ -91,17 +88,20 @@ $(document).ready(function() {
   }
   //changes to gif image on hover
   $(".candyImage img").hover(toggleCandyImage);
-
+var patt=/\"|\'|\)/g;
   //Image click to hide main image container and bring up single image-full-size
   function clickImage() {
     $("#fullImage").css({
       "background-image": "url('" + $("img", this).attr("src") + " ')"
     }).show();
+    $("#fullImage").data("currentImage", $("#fullImage").css("background-image").split('/').pop().replace(patt, ''));
     $("#imageContainer").hide();
+    currentImage = $("#fullImage").data("currentImage");
   }
+
   //full screen image click toggles the navbars visibility
   function clickFullImage() {
-    $("#navBarContainer").toggle();
+    $("#navBarContainer").toggleClass("fadeOutDownBig");
   }
 
   $(".candyImage").click(clickImage);
@@ -111,18 +111,19 @@ $(document).ready(function() {
   var myShakeEvent = new Shake({
     threshold: 5, // optional shake strength threshold
     timeout: 500 // optional, determines the frequency of event generation
-  });
+  }); //end of myShakeEvent
 
   function reset() {
     $("#fullImage").hide();
     $("#imageContainer").show();
-    $("#navBarContainer").show();
-  }
+    $("#navBarContainer").addClass("fadeInBigUp");
+  } //end of reset func
 
   function randomImage() {
+
     return gifImages[Math.floor(Math.random() * gifImages.length)];
 
-  }
+  } // end of randomImage func
 
   function toggleShake() {
     if (shakeOn === true) {
@@ -136,7 +137,7 @@ $(document).ready(function() {
       shakeOn = true;
       $(this).addClass("shakeOnImg");
     }
-  }
+  } //end of toggleShake function
 
   $("#candyBtn").click(reset);
   $("#shakeBtn").click(toggleShake);
@@ -144,24 +145,43 @@ $(document).ready(function() {
   //function to call when shake occurs
   function shakeEventDidOccur() {
 
-    //put your own code here etc.
     $("#fullImage").css({
       "background-image": "url('assets/" + randomImage() + " ')"
     });
-  }
-  $("#strobeBtn").on("click", function() {
-    $(this).addClass("strobeOn");
-    window.plugins.flashlight.toggle(); // success/error callbacks may be passed
-    window.plugins.flashlight.isSwitchedOn(); // returns true/false
+    currentImage = $("#fullImage").css("background-image").split('/').pop().replace(patt, '');
+  } // End of shakeEventDidOccur function
+ 
+
+  //get image  to LEFT on swipe
+  $("#fullImage").on("swiperight",function(){
+     var currentBg =  gifImages.indexOf(currentImage);
+     if (currentBg === 0){
+     currentBg = gifImages[currentBg];
+   }  else {
+    currentBg = gifImages[currentBg-1];
+   }
+    $("#fullImage").css("background-image", "url('assets/"+ currentBg +"')");
+    currentImage = currentBg;
   });
-  
-  document.addEventListener("backbutton", function() {
-  // pass exitApp as callbacks to the switchOff method
-  window.plugins.flashlight.switchOff(exitApp, exitApp);
-}, false);
 
-function exitApp() {
-  navigator.app.exitApp();
-}
+  //get Image to RIGHT on swipe
+  $("#fullImage").on("swipeleft",function(){
+     var currentBg =  gifImages.indexOf(currentImage);
+     if (currentBg === 29){
+      currentBg = gifImages[currentBg];
+    } 
+     else {
+      currentBg = gifImages[currentBg+1];
+      }
 
+    $("#fullImage").css("background-image", "url('assets/"+ currentBg +"')");
+    currentImage = currentBg;
+  });
+
+  window.addEventListener("orientationchange", function(){
+    console.log(screen.orientation); // e.g. portrait
 });
+
+
+
+}); //End of document ready function
